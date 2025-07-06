@@ -1,0 +1,169 @@
+agent:
+  name: "Consulting_Agent"
+  version: "1.0"
+  description: "Agent answer the question about consulting a beauty service."
+  id: "consult-agent"
+
+models: 
+  google: "gemini-2.5-flash-lite-preview-06-17"
+  openai: "gpt-4o-mini"
+  qwen: "qwen-max"
+  anthropic: "claude-3-7-sonnet"
+
+# Runtime settings
+runtime:
+  mode: "development" # Options: development, testing, production
+  log_level: "info" # Options: debug, info, warning, error, critical
+  timeout: 60 # Maximum execution time in seconds
+  max_retries: 3 # Maximum retry attempts for failed operations
+
+# Security configuration
+security:
+  authentication:
+    enabled: true
+    method: "oauth2" # Options: basic, token, oauth2, jwt
+    token_expiry: 3600 # Token expiry in seconds
+  encryption:
+    enabled: true
+    algorithm: "AES-256-GCM"
+  rate_limiting:
+    enabled: true
+    requests_per_minute: 100
+
+# API integration settings
+api:
+  base_url: "https://api.example.com/v1"
+  api_key_env: "API_KEY_VARIABLE"
+  endpoints:
+    - name: "data"
+      path: "/data"
+      method: "GET"
+    - name: "process"
+      path: "/process"
+      method: "POST"
+  headers:
+    Content-Type: "application/json"
+    User-Agent: "AgentX/1.0"
+
+# Database configuration
+database:
+  type: "postgresql" # Options: postgresql, mysql, mongodb, sqlite
+  host: "db.example.com"
+  port: 5432
+  name: "agent_db"
+  user_env: "DB_USER_VARIABLE"
+  password_env: "DB_PASSWORD_VARIABLE"
+  connection_pool: 10
+  timeout: 30
+
+# Resource limits
+resources:
+  memory_limit: "2Gi"
+  cpu_limit: "1000m"
+  storage_limit: "10Gi"
+
+# Notification settings
+notifications:
+  enabled: true
+  channels:
+    email:
+      enabled: true
+      recipients:
+        - "admin@example.com"
+        - "alerts@example.com"
+    slack:
+      enabled: true
+      webhook_url_env: "SLACK_WEBHOOK_URL"
+      channel: "#agent-alerts"
+
+# Task execution configuration
+tasks:
+  concurrency: 5
+  queue_limit: 100
+  default_priority: "medium" # Options: low, medium, high, critical
+  retry_policy:
+    enabled: true
+    max_attempts: 3
+    backoff:
+      initial_delay: 5
+      multiplier: 2
+      max_delay: 60
+
+# Monitoring and metrics
+monitoring:
+  enabled: true
+  metrics:
+    collection_interval: 60 # Seconds
+    export:
+      prometheus:
+        enabled: true
+        port: 9090
+  health_check:
+    enabled: true
+    interval: 60 # Seconds
+    endpoint: "/health"
+
+# Caching configuration
+cache:
+  enabled: true
+  type: "redis" # Options: redis, memcached, in-memory
+  ttl: 3600 # Time to live in seconds
+  max_size: "1Gi"
+
+# Feature flags
+features:
+  advanced_processing: true
+  experimental_algorithms: false
+  auto_scaling: true
+  offline_mode: false
+
+# Environment-specific overrides
+environments:
+  development:
+    runtime:
+      log_level: "debug"
+    security:
+      authentication:
+        enabled: false
+
+  testing:
+    runtime:
+      timeout: 120
+    database:
+      host: "test-db.example.com"
+
+  production:
+    resources:
+      memory_limit: "4Gi"
+      cpu_limit: "2000m"
+    notifications:
+      channels:
+        pagerduty:
+          enabled: true
+          service_key_env: "PAGERDUTY_KEY"
+
+# External dependencies
+dependencies:
+  libraries:
+    - name: "data-processor"
+      version: "2.4.1"
+    - name: "security-utils"
+      version: "1.9.0"
+  services:
+    - name: "auth-service"
+      url: "https://auth.example.com"
+      health_check: "/ping"
+    - name: "storage-service"
+      url: "https://storage.example.com"
+      health_check: "/status"
+
+# Logging configuration
+logging:
+  format: "json" # Options: json, text
+  output: "stdout" # Options: stdout, file
+  file_path: "/var/log/agent.log"
+  rotation:
+    max_size: "100Mi"
+    max_age: 7 # Days
+    max_backups: 5
+    compress: true

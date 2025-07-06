@@ -1,0 +1,44 @@
+sources:
+  my-mysql-instance:
+    kind: mysql
+    host: ${DB_HOST}
+    port: ${DB_PORT}
+    database: ${BOOKING_CHATBOT_DB}
+    user: ${DB_USER}
+    password: ${DB_PASSWORD}
+
+tools:
+  execution_tool:
+    kind: mysql-execute-sql
+    source: my-mysql-instance
+    description: Use this tool to execute sql statement.
+
+  list_table:
+    kind: mysql-sql
+    source: my-mysql-instance
+    description: |
+      Use this tool to list all tables in the database.
+    statement: |
+      SHOW TABLES;
+
+  get_information_from_table:
+    kind: mysql-sql
+    source: my-mysql-instance
+    statement: |
+      SELECT * 
+      FROM `{{.tableName}}`;
+    description: |
+      Use this tool to list all information from a specific table.
+      Example:
+      {{
+          "tableName": "salons",
+      }}
+    templateParameters:
+      - name: tableName
+        type: string
+        description: Table to select from
+
+toolsets:
+  information_tools:
+    - get_information_from_table
+    - list_table
