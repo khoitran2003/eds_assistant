@@ -186,3 +186,6 @@ requirements-test.txt
 test/
 app/test/
 test*.py
+
+# Toolbox
+/toolbox
